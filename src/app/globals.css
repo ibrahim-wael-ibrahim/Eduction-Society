@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+  .FLEX-CENTER {
+    @apply  flex flex-col items-center justify-center;
+  }
+::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+  }
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #0ff000; 
+  }
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgb(92, 92, 92); 
+  }
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(255, 255, 255); 
+    border-radius: 5px;
+  }
+
+  .embla {
+    overflow: hidden;
+
+  }
+  .embla__container {
+    @apply  flex flex-row items-center justify-start w-full h-full;
+  }
+  .embla__slide {
+    flex: 0 0 100%;
+    min-width: 0;
+  }

@@ -1,0 +1,387 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id       String   @id @default(cuid())
+  name     String?
+  email    String   @unique
+  password String?
+  virify   Boolean? @default(false)
+  image    String?
+  type     String   @default("ADMIN_INSTITUTION")
+
+  institution Institution?
+}
+
+model Payment {
+  id         String   @id @default(cuid())
+  date       DateTime @default(now())
+  amount     Int
+  cardNumber String
+  cvv        String
+  expireDate String
+
+  institution   Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  institutionId String
+}
+
+model Institution {
+  id           String         @id @default(cuid())
+  name         String
+  country      String
+  state        String
+  city         String
+  address      String
+  register     Boolean        @default(false)
+  admin        Admin          @relation(fields: [adminId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  adminId      String         @unique
+  image        String?
+  semester     Semester[]
+  hour         Hour[]
+  take         Take[]
+  user         User[]
+  department   Department[]
+  subject      Subject[]
+  payment      Payment[]
+  notification Notification[]
+  year         Year[]
+  post         Post[]
+}
+
+model Year {
+  id            String      @id @default(cuid())
+  name          String?
+  institution   Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  institutionId String
+  hour          Hour[]
+  semester      Semester[]
+  student       Student[]
+  Take          Take[]
+}
+
+model Semester {
+  id            String            @id @default(cuid())
+  name          String
+  year          Year              @relation(fields: [yearId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  yearId        String
+  institution   Institution       @relation(fields: [institutionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  institutionId String
+  hour          Hour[]
+  studentPay    PaymentSemester[]
+
+  student Student[]
+  Take    Take[]
+}
+
+model Hour {
+  id            String      @id @default(cuid())
+  price         String
+  year          Year        @relation(fields: [yearId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  yearId        String
+  semester      Semester    @relation(fields: [semesterId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  semesterId    String
+  department    Department  @relation(fields: [departmentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  departmentId  String
+  institution   Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  institutionId String
+  Take          Take[]
+}
+
+model Notification {
+  id            String      @id @default(cuid())
+  name          String
+  content       String
+  link          String
+  date          DateTime    @default(now())
+  institution   Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  institutionId String
+}
+
+model Department {
+  id            String      @id @default(cuid())
+  name          String
+  hours         String
+  institution   Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  institutionId String
+  hour          Hour[]
+  Take          Take[]
+  student       Student[]
+}
+
+model Subject {
+  id            String      @id @default(cuid())
+  name          String
+  code          String
+  institution   Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  institutionId String
+
+  Take Take[]
+}
+
+model Take {
+  id            String      @id @default(cuid())
+  department    Department  @relation(fields: [departmentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  departmentId  String
+  institution   Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  institutionId String
+  subject       Subject     @relation(fields: [subjectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  subjectId     String
+  year          Year        @relation(fields: [yearId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  yearId        String
+  semester      Semester    @relation(fields: [semesterId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  semesterId    String
+  hour          Hour        @relation(fields: [hourId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  hourId        String
+  optional      Boolean
+  hourCount     String
+
+  student StudentTake[]
+
+  lecture    Lecture[]
+  hirring  Hirring[]
+  assignment Assignment[]
+}
+
+enum STATUS_SUBJECT {
+  PASS
+  FAIL
+  IN_PROGRESS
+}
+
+model StudentTake {
+  student     Student         @relation(fields: [studentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  studentId   String
+  take        Take            @relation(fields: [takeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  takeId      String
+  grade       String?
+  finalDegree String?
+  midDegree   String?
+  addDegree   String?
+  status      STATUS_SUBJECT  @default(IN_PROGRESS)
+  @@unique([studentId, takeId])
+}
+
+model Lecture {
+  id   String   @id @default(cuid())
+  name String?
+  date DateTime @default(now())
+  link String?
+
+  description String?
+  file        File[]
+  Take        Take    @relation(fields: [TakeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  TakeId      String
+
+  question Question[]
+}
+
+model Question {
+  id        String   @id @default(cuid())
+  content      String
+  date      DateTime @default(now())
+  student      Student     @relation(fields: [studentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  studentId    String
+  lecture   Lecture  @relation(fields: [lectureId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  lectureId String
+  answer    Answer[]
+}
+
+model Answer {
+  id      String   @id @default(cuid())
+  content String
+  date    DateTime @default(now())
+  teacher    Teacher     @relation(fields: [teacherId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  teacherId  String
+
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  questionId String
+}
+
+model Assignment {
+  id          String   @id @default(cuid())
+  name        String?
+  date        DateTime @default(now())
+  lastDate    String?
+  link        String?
+  file        File[]
+  description String?
+
+  Take   Take   @relation(fields: [TakeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  TakeId String
+
+  submit SubmtionAssignment[]
+}
+
+enum TYPE_USER {
+  STUDENT
+  TEACHER
+  PROFESSOR
+  ADMIN_REGISTER
+  ADMIN_SOCIAL
+}
+
+model User {
+  id       String    @id @default(cuid())
+  email    String    @unique
+  password String
+  name     String
+  address  String?
+  type     TYPE_USER
+  birth    String?
+  phone    String?
+  gender   String?
+  image    String?
+
+  institution   Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  institutionId String
+
+  followedBy User[] @relation("UserFollows") // دول البيتبعوني
+  following  User[] @relation("UserFollows") // دول البتابعهم
+
+  reaction Reaction[]
+  comment  Comment[]
+
+  postSave SavePost[]
+  student  Student?
+  teacher  Teacher?
+}
+
+model SavePost {
+  id     String @id @default(cuid())
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  postId String
+}
+
+model Post {
+  id           String   @id @default(cuid())
+  content      String
+  date         DateTime @default(now())
+  publicChoose Boolean
+  file         File[]
+
+  teacher       Teacher?     @relation(fields: [teacherId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  teacherId     String?
+  institution   Institution? @relation(fields: [institutionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  institutionId String?
+
+  reaction Reaction[]
+  comment  Comment[]
+  userSave SavePost[]
+}
+
+model Reaction {
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  postId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+
+  @@unique([postId, userId])
+}
+
+model Comment {
+  id      String   @id @default(cuid())
+  content String
+  date    DateTime @default(now())
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId  String
+  post    Post     @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  postId  String
+}
+
+model Student {
+  id           String               @id @default(cuid())
+  user         User                 @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId       String               @unique
+  department   Department           @relation(fields: [departmentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  departmentId String
+  code         String
+  startYear    String
+  grade        String?
+  Take         StudentTake[]
+  assignment   SubmtionAssignment[]
+  payment      PaymentSemester[]
+  semester     Semester             @relation(fields: [semesterId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  semesterId   String
+  year         Year                 @relation(fields: [yearId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  yearId       String
+  question     Question[]
+
+  @@unique([departmentId, code])
+}
+
+model PaymentSemester {
+  date       DateTime @default(now())
+  amount     String
+  cardNumber String
+  cvv        String
+  expireDate String
+
+  student   Student @relation(fields: [studentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  studentId String
+
+  semester   Semester @relation(fields: [semesterId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  semesterId String
+
+  @@unique([semesterId , studentId])
+}
+
+model SubmtionAssignment {
+  id           String     @id @default(cuid())
+  student      Student    @relation(fields: [studentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  studentId    String
+  assignment   Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  assignmentId String
+  file         File[]
+  date         DateTime   @default(now())
+  status       SubmitAssignmentStatus @default(PENDING)
+  @@unique([studentId, assignmentId])
+}
+enum SubmitAssignmentStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+model Teacher {
+  id     String          @id @default(cuid())
+  degree String?
+  about  String?
+  user   User            @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String          @unique
+  hirring   Hirring[]
+  post   Post[]
+  answer Answer[]
+}
+
+model Hirring {
+  teacher   Teacher @relation(fields: [teacherId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  teacherId String
+  take      Take    @relation(fields: [takeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  takeId    String
+
+  @@unique([teacherId, takeId])
+}
+
+
+model File {
+  id                   String              @id @default(cuid())
+  name                 String
+  path                 String
+  type                 String
+  date                 DateTime            @default(now())
+  lecture              Lecture?            @relation(fields: [lectureId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  lectureId            String?
+  assignment           Assignment?         @relation(fields: [assignmentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  assignmentId         String?
+  submtionAssignment   SubmtionAssignment? @relation(fields: [submtionAssignmentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  submtionAssignmentId String?
+  post                 Post?               @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  postId               String?
+}
