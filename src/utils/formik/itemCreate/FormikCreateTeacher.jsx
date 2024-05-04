@@ -3,6 +3,9 @@ import * as Yup from "yup";
 import { toast } from "sonner";
 import { useState } from "react";
 import axios from "axios";
+import  { useSWRConfig } from 'swr'
+import { useSession } from "next-auth/react";
+
 
 const createTeacherSchema = Yup.object().shape({
   name: Yup.string().required("name is required"),
@@ -18,6 +21,9 @@ const createTeacherSchema = Yup.object().shape({
 const FormikCreateTeacher = () => {
     const [loading, setLoading] = useState(false);
     const [reloadKey, setReloadKey] = useState(0);
+    const {data : session} = useSession();
+    
+    const { mutate } = useSWRConfig()
 
     const formik = useFormik({
       initialValues: {
@@ -37,6 +43,7 @@ const FormikCreateTeacher = () => {
         try {
             await axios.post(`/api/v2/teacher`, [values]);
             toast.success("Successfully Created teacher");
+            mutate(`api/v1/count/${session.user.institution}/teacher`)
             formik.resetForm()
             setReloadKey(reloadKey + 1);
 

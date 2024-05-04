@@ -1,5 +1,5 @@
 'use client'
-import {useEffect , useState} from 'react'
+import React,{useEffect , useState} from 'react'
 import CustomSelect from '@/components/UI/CustomSelect'
 import { Button } from '@nextui-org/react'
 import { useSession } from 'next-auth/react'

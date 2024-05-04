@@ -22,7 +22,7 @@ const Manage = ({ take }) => {
   }, []);
   return (
     <>
-      <CreateLectureModel title={"CreateLecture"}>
+      <CreateLectureModel title={"Create Lecture"}>
         <CreateLecture take={take} />
       </CreateLectureModel>
 

@@ -20,7 +20,7 @@ const PublishPost = () => {
         <PostInsert/>
       </PostInsertModal>
       <Card
-        className="max-w-[400px] sm:max-w-[900px] w-full my-4"
+        className="max-w-[400px] sm:max-w-[600px] w-full my-4"
         isPressable onPress={()=>{handlePostEditOpen()}}
       >
         <CardHeader className="flex flex-col justify-start items-start py-4 gap-2">

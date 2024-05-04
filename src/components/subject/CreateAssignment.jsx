@@ -89,7 +89,7 @@ const formattedToday = yyyy + '-' + mm + '-' + dd;
       />
       <CustomInput
   labelPlace='outside'
-  label='Date'
+  label='Last Date'
   formik={formik}
   fieldName={"date"}
   type="date"

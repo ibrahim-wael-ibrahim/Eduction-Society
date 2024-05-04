@@ -41,6 +41,7 @@ export const UserCard = ({user , follow ,showFollow , api }) => {
           }}
           as={Link}
           href={`/profile/${user.id}`}
+          className=" text-green-500"
           
         />
         {showFollow ? ( follow ? (

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
@@ -32,7 +32,7 @@ import { PiChatCircleThin } from "react-icons/pi";
 import { toast } from "sonner";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-
+import { FaBookmark } from "react-icons/fa";
 const page = ({ params }) => {
   const { ModalUI: ShareModal, handleOpen: handleShareOpen } =
     ModalContainer("SharePost");
@@ -46,9 +46,27 @@ const page = ({ params }) => {
 
   const { data: session } = useSession();
   const router = useRouter();
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
 
-  useEffect(() => {}, [emblaApi]);
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
+  // __________________________________________
+
+  const [selectedSnap, setSelectedSnap] = useState(0);
+  const [snapCount, setSnapCount] = useState(0);
+
+  const updateScrollSnapState = useCallback((emblaApi) => {
+    setSnapCount(emblaApi.scrollSnapList().length);
+    setSelectedSnap(emblaApi.selectedScrollSnap());
+  }, []);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    updateScrollSnapState(emblaApi);
+    emblaApi.on("select", updateScrollSnapState);
+    emblaApi.on("reInit", updateScrollSnapState);
+  }, [emblaApi, updateScrollSnapState]);
+
+  // ________________________________
 
   useEffect(() => {}, [post]);
 
@@ -282,7 +300,13 @@ const page = ({ params }) => {
                 </div>
               ))}
             </div>
+
           </div>
+          {snapCount > 1 && (
+              <div className="px-6">{`Count ${
+                selectedSnap + 1
+              } / ${snapCount}`}</div>
+            )}
         </CardBody>
         <CardFooter className="flex  justify-between items-center bg-green-500/10   overflow-hidden py-2  rounded-large  w-[calc(100%_-_50px)] shadow-small h-[100px]  mx-auto my-2 bottom-4 right-0 left-0 z-10">
           <div className="flex justify-center items-center gap-4">
@@ -302,7 +326,13 @@ const page = ({ params }) => {
                   : handleReaction
               }
             >
-              <CiHeart size={26} /> {post.reaction.length}
+              {session &&
+              post.reaction.map((r) => r.userId).includes(session.user.id) ? (
+                <FaHeart size={26} />
+              ) : (
+                <CiHeart size={26} />
+              )}{" "}
+              {post.reaction.length}
             </Button>
             <Button
               color={
@@ -342,7 +372,13 @@ const page = ({ params }) => {
                 : handleSavePost
             }
           >
-            <CiBookmark size={26} /> {post.userSave.length}
+            {session &&
+            post.userSave.map((r) => r.userId).includes(session.user.id) ? (
+              <FaBookmark size={26} />
+            ) : (
+              <CiBookmark size={26} />
+            )}
+            {post.userSave.length}
           </Button>
         </CardFooter>
       </Card>

@@ -73,7 +73,7 @@ const ItemTake = () => {
         placeholder="Select a Semester"
       />
       <CustomSelect
-        label="Hour"
+        label="Price Of Hour"
         fieldName="hour"
         formik={formik}
         options={hour} // Assuming you have fetched the hour data elsewhere

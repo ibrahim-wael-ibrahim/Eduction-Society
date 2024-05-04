@@ -25,7 +25,7 @@ const ReadMore = ({ children }) => {
  
 const Content = ({content}) => {
     return (
-        <div className=" container w-10/12">
+        <div className=" container w-10/12 px-6">
                 <ReadMore>
                     {content}
                 </ReadMore>

@@ -14,6 +14,7 @@ const RegisterNavbar = () => {
               className="transition-transform "
               name={session?.user?.name || 'User'}
               size="sm"
+              color='success'
               src={session?.user?.image || ''}
             />
           </DropdownTrigger>
