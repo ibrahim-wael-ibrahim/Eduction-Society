@@ -47,4 +47,3 @@ Admin_Social {
     email       : ibrahim.social723374@ain.admin.com
     password    : 20011101
 }
-reyad
