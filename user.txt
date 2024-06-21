@@ -48,4 +48,3 @@ Admin_Social {
     password    : 20011101
 }
 
-ibrahim
