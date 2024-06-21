@@ -8,10 +8,11 @@ import { useSession } from "next-auth/react";
 import AssignmentItem from "./AssignmentItem";
 const Assignment = ({ take }) => {
   const { data: session } = useSession();
-  const { data: assignmentData, isLoading , mutate } = useSWR(
-    `/api/v2/takeSubject/${take}/assignment`,
-    fetcher
-  );
+  const {
+    data: assignmentData,
+    isLoading,
+    mutate,
+  } = useSWR(`/api/v2/takeSubject/${take}/assignment`, fetcher);
   const compareDates = (dateString) => {
     const dateObject = new Date(dateString);
 
@@ -34,7 +35,7 @@ const Assignment = ({ take }) => {
       <CardBody>
         {isLoading ? (
           <div>Loading</div>
-        ) : (
+        ) : assignmentData.length > 0 ? (
           <Accordion selectionMode="multiple" variant="splitted">
             {assignmentData &&
               assignmentData.map((assignment) => (
@@ -52,10 +53,12 @@ const Assignment = ({ take }) => {
                   } / End date : ${assignment.lastDate}`}
                   aria-label={assignment.name}
                 >
-                  <AssignmentItem assignment={assignment} mutate={mutate}/>
+                  <AssignmentItem assignment={assignment} mutate={mutate} />
                 </AccordionItem>
               ))}
           </Accordion>
+        ) : (
+          <div>Empty</div>
         )}
       </CardBody>
     </Card>

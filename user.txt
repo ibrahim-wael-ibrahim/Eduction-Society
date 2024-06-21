@@ -17,6 +17,10 @@ professor {
     email       : reyad.mousa451766@modern.professor.com
     password    : 20020202
 }
+professor 2 {
+    email       : pro.reyad948378@modern.professor.com
+    password    : 22220222
+}
 teacher {
     email       : reyad.mousa284736@modern.teacher.com
     password    : 20020202

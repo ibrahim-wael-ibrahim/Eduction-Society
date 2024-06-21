@@ -31,7 +31,7 @@ const Lecture = ({ take }) => {
             ))}
           </Accordion>
         ) : (
-          <div className="flex justify-center">Empty</div> // Empty fragment or you can render a message like "No lectures available."
+          <div>Empty</div> // Empty fragment or you can render a message like "No lectures available."
         )}
       </CardBody>
     </Card>

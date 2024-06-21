@@ -30,7 +30,7 @@ const TeacherContainer = () => {
             >
               <FaChalkboardTeacher size={100} />
               <span className="capitalize first-letter:text-green-500 text-center">
-                Add Teacher
+                Add Professor / Teacher
               </span>
             </Card>
           </CardBody>
