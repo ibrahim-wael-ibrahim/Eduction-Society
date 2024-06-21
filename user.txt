@@ -1,25 +1,49 @@
 Admin_Institution {
-    email       : ibrahim@gmail.com
-    password    : 123456789
+    email       : reyad@gmail.com
+    password    : 00000000
 }
 
 Admin_Register {
-    email       : ibrahim.register230789@modern.admin.com
-    password    : 20020307
+    email       : reyad.mousa243696@modern.admin.com
+    password    : 20020202
 }
 
 Admin_Social {
-    email       : ibrahim.social559362@modern.admin.com
-    password    : 20020307
+    email       : reyad.mousa150483@modern.admin.com
+    password    : 20020202
+}
+
+professor {
+    email       : reyad.mousa451766@modern.professor.com
+    password    : 20020202
+}
+teacher {
+    email       : reyad.mousa284736@modern.teacher.com
+    password    : 20020202
+}
+student1 {
+    email       : reyad.528332@modern.student.com
+    password    : 20020202
+}
+student2 {
+    email       : reyad.two897473@modern.student.com
+    password    : 20020202
 }
 
 
 
+Ain Shams University
+Admin_Institution {
+    email       : ibrahim@gmail.com
+    password    : 00000000
+}
 
+Admin_Register {
+    email       : mary.624522@ain.admin.com
+    password    : 20030331
+}
 
-email reyad.736008@modern.admin.com
-pass 12341212
-User REYAD created successfully
-email lolo.algamda994108@modern.admin.com
-pass 12341212
-User LOLO ALGAMDA created successfully
+Admin_Social {
+    email       : ibrahim.social723374@ain.admin.com
+    password    : 20011101
+}

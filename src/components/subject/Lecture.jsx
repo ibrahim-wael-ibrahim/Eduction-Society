@@ -15,23 +15,23 @@ const Lecture = ({ take }) => {
     <Card fullWidth isBlurred className=" h-full">
       <CardBody>
         {isLoading ? (
-          <div>Loading</div>
-        ) : (
+          <div>Loading...</div>
+        ) : lectureData.length > 0 ? (
           <Accordion selectionMode="multiple" variant="splitted">
-            {lectureData &&
-              lectureData.map((lecture) => (
-                <AccordionItem startContent={
-                  <MdOutlinePlayLesson  size={40}/>
-                } title={lecture.name} key={lecture.id} subtitle={
-                  lecture.date.split("T")[0]
-                
-                }
+            {lectureData.map((lecture) => (
+              <AccordionItem
+                startContent={<MdOutlinePlayLesson size={40} />}
+                title={lecture.name}
+                key={lecture.id}
+                subtitle={lecture.date.split("T")[0]}
                 aria-label={lecture.name}
-                >
-                  <LectureItem lecture={lecture} />
-                </AccordionItem>
-              ))}
+              >
+                <LectureItem lecture={lecture} />
+              </AccordionItem>
+            ))}
           </Accordion>
+        ) : (
+          <div className="flex justify-center">Empty</div> // Empty fragment or you can render a message like "No lectures available."
         )}
       </CardBody>
     </Card>
