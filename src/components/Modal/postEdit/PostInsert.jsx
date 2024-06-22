@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from "react";
 import { Button, Textarea, Switch, Image, Card, Link } from "@nextui-org/react";
 import FormikPost from "@/utils/formik/FormikPost";
 import { IoEarthOutline } from "react-icons/io5";
@@ -9,25 +9,24 @@ import { FaUpload } from "react-icons/fa6";
 
 const PostInsert = () => {
   const { formik, loading } = FormikPost();
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false })
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
   // __________________________________________
 
-  const [selectedSnap, setSelectedSnap] = useState(0)
-  const [snapCount, setSnapCount] = useState(0)
+  const [selectedSnap, setSelectedSnap] = useState(0);
+  const [snapCount, setSnapCount] = useState(0);
 
   const updateScrollSnapState = useCallback((emblaApi) => {
-    setSnapCount(emblaApi.scrollSnapList().length)
-    setSelectedSnap(emblaApi.selectedScrollSnap())
-  }, [])
+    setSnapCount(emblaApi.scrollSnapList().length);
+    setSelectedSnap(emblaApi.selectedScrollSnap());
+  }, []);
 
   useEffect(() => {
-    if (!emblaApi) return
+    if (!emblaApi) return;
 
-    updateScrollSnapState(emblaApi)
-    emblaApi.on('select', updateScrollSnapState)
-    emblaApi.on('reInit', updateScrollSnapState)
-  }, [emblaApi, updateScrollSnapState])
-
+    updateScrollSnapState(emblaApi);
+    emblaApi.on("select", updateScrollSnapState);
+    emblaApi.on("reInit", updateScrollSnapState);
+  }, [emblaApi, updateScrollSnapState]);
 
   // ________________________________
   return (
@@ -137,8 +136,8 @@ const PostInsert = () => {
               );
             })}
           </div>
-          
-          <div>{`Count ${selectedSnap+1} / ${snapCount}`}</div>
+
+          <div>{`Count ${selectedSnap + 1} / ${snapCount}`}</div>
         </div>
       ) : (
         <Card className="h-[300px] w-full">
@@ -155,7 +154,7 @@ const PostInsert = () => {
         </Card>
       )}
 
-      <Switch
+      {/* <Switch
         size="lg"
         color="success"
         startContent={<IoEarthOutline />}
@@ -166,7 +165,7 @@ const PostInsert = () => {
         }}
       >
         Public
-      </Switch>
+      </Switch> */}
       <Button
         color="success"
         variant="ghost"

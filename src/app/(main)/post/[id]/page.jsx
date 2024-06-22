@@ -32,7 +32,7 @@ import { PiChatCircleThin } from "react-icons/pi";
 import { toast } from "sonner";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { FaBookmark } from "react-icons/fa";
+import { FaBookmark, FaHeart } from "react-icons/fa";
 const page = ({ params }) => {
   const { ModalUI: ShareModal, handleOpen: handleShareOpen } =
     ModalContainer("SharePost");
@@ -300,13 +300,12 @@ const page = ({ params }) => {
                 </div>
               ))}
             </div>
-
           </div>
           {snapCount > 1 && (
-              <div className="px-6">{`Count ${
-                selectedSnap + 1
-              } / ${snapCount}`}</div>
-            )}
+            <div className="px-6">{`Count ${
+              selectedSnap + 1
+            } / ${snapCount}`}</div>
+          )}
         </CardBody>
         <CardFooter className="flex  justify-between items-center bg-green-500/10   overflow-hidden py-2  rounded-large  w-[calc(100%_-_50px)] shadow-small h-[100px]  mx-auto my-2 bottom-4 right-0 left-0 z-10">
           <div className="flex justify-center items-center gap-4">
